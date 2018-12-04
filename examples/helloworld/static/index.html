@@ -12,6 +12,7 @@
 				overflow: hidden;
 			}
 		</style>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 	<body>
     <canvas id="canvas"></canvas>
@@ -19,10 +20,10 @@
 		<script>
       window.Imgui = {
         onRuntimeInitialized: function() {
-          console.log('Load finished.');
+					console.log('Load finished.');
+					$.getScript("js/app.js"); 
         }
       };
     </script>
-    <script src="helloworld.js"></script>
 	</body>
 </html>

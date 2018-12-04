@@ -3,6 +3,7 @@
 extern crate stdweb;
 
 #[cfg(not(target_arch = "wasm32"))]
+#[derive(Debug, Clone)]
 pub struct Imgui{
 }
 
@@ -19,6 +20,7 @@ impl Imgui{
 }
 
 #[cfg(all(target_arch = "wasm32"))]
+#[derive(Debug, Clone)]
 pub struct Imgui{
     module: stdweb::Value
 }

@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate stdweb;
 
 extern crate imgui_rust;
@@ -7,6 +8,4 @@ fn main() {
 
     let im = imgui_rust::Imgui::new();
     im.IMGUI_CHECKVERSION();
-
-    stdweb::event_loop();
 }
