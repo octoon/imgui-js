@@ -5,8 +5,7 @@ authors = ["JasonWang <1103870790@qq.com>"]
 edition = "2018"
 
 [dependencies]
-imgui-rust = { path = "../../" }
+imgui-rust = { path = "../../", features=["stdweb"]}
 stdweb = "0.4.10"
-stdweb-derive = "0.5.1"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
