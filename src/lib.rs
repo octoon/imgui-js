@@ -1,49 +1,19 @@
-#[cfg(not(target_arch = "wasm32"))]
-extern crate libc;
-
 #[macro_use]
 #[cfg(all(target_arch = "wasm32"))]
 extern crate stdweb;
 
-#[cfg(not(target_arch = "wasm32"))]
-#[derive(Debug, Clone)]
-pub struct Imgui{
-}
-
-#[cfg(not(target_arch = "wasm32"))]
-impl Imgui{
-    pub fn new() -> Imgui{
-        Imgui{
-        }
-    }
-
-    #[allow(non_snake_case)]
-    pub fn IMGUI_CHECKVERSION(&self){
-    }
-}
 
 #[cfg(all(target_arch = "wasm32"))]
-#[derive(Debug, Clone)]
-pub struct Imgui{
-    module: stdweb::Value
-}
+pub mod imgui_stdweb;
 
 #[cfg(all(target_arch = "wasm32"))]
-impl Imgui{
-    pub fn new() -> Imgui{
-        Imgui{
-            module:js!{return window.Imgui;}
-        }
-    }
+pub use self::imgui_stdweb::*;
 
-    #[allow(non_snake_case)]
-    pub fn IMGUI_CHECKVERSION(&self){
-        let module = &self.module;
-        js! {
-            @{module}.IMGUI_CHECKVERSION();
-        };
-    }
-}
+#[cfg(not(target_arch = "wasm32"))]
+pub mod imgui_c;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub use self::imgui_c::*;
 
 
 #[cfg(test)]
