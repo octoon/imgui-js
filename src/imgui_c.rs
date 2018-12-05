@@ -9,7 +9,7 @@ pub struct ImguiIO{
 
 #[derive(Debug, Clone)]
 pub struct ImDrawData{
-    imgui_draw_data:*mut ImDrawData
+    imgui_draw_data:*mut imgui_sys::ImDrawData
 }
 
 impl ImDrawData{
@@ -19,16 +19,22 @@ impl ImDrawData{
 
 #[derive(Debug, Clone)]
 pub struct ImDrawList{
-    draw_list:*mut ImDrawList
+    draw_list:*mut imgui_sys::ImDrawList
 }
 
 impl ImDrawList{
     pub fn vtx_buffer(&self) -> &imgui_sys::ImVector<imgui_sys::ImDrawVert>{
-
+        unsafe{
+            let list = &*(self.draw_list);
+            &list.vtx_buffer
+        }
     }
 
     pub fn idx_buffer(&self) -> &imgui_sys::ImVector<imgui_sys::ImDrawIdx>{
-        
+        unsafe{
+            let list = &*(self.draw_list);
+            &list.idx_buffer
+        }
     }
 
     pub fn iterate_draw_cmds(&self, callback:fn(*const ImDrawList)->()){
@@ -78,7 +84,7 @@ impl Imgui{
     }
 
     pub fn get_io(&self) -> ImguiIO{
-        let ret = ImguiIO{
+        let mut ret = ImguiIO{
             imgui_io:0 as _
         };
         unsafe{
@@ -89,7 +95,14 @@ impl Imgui{
     }
 
     pub fn get_draw_data(&self) -> ImDrawData{
-
+        let mut ret = ImDrawData{
+            imgui_draw_data:0 as _
+        };
+        unsafe{
+            let draw_data = imgui_sys::igGetDrawData();
+            ret.imgui_draw_data = draw_data;
+        }
+        ret
     }
 
     pub fn style_colors_dark(&self){
