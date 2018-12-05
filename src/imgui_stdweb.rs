@@ -2,10 +2,20 @@
 
 #[derive(Debug, Clone)]
 pub struct ImguiIO{
+    imgui_io:stdweb::Value
 }
 
 #[derive(Debug, Clone)]
-pub struct ImguiDrawData{
+pub struct ImDrawData{
+    imgui_draw_data:stdweb::Value
+}
+
+impl ImDrawData{
+    pub fn iterate_draw_lists(&self, callback:fn(stdweb::Value)->()){
+        js! {
+            window.Imgui.IterateDrawLists(@{callback});
+        };
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -24,12 +34,6 @@ impl ImDrawList{
 
     pub fn flags(&self) -> &stdweb::Value{
         self.draw_list.Flags
-    }
-
-    pub fn iterate_draw_lists(&self, callback:fn(stdweb::Value)->()){
-        js! {
-            window.Imgui.IterateDrawLists(@{callback});
-        };
     }
 
     pub fn iterate_draw_cmds(&self, callback:fn(stdweb::Value)->()){
@@ -67,22 +71,44 @@ impl Imgui{
 
     pub fn create_context(&self){
         js! {
-            return window.Imgui.create_context();
+            return window.Imgui.CreateContext();
         };
     }
 
-    pub fn get_io(&self) -> stdweb::Value{
+    pub fn new_frame(&self){
+        js! {
+            return window.Imgui.NewFrame();
+        };
+    }
+
+    pub fn end_frame(&self){
+        js! {
+            return window.Imgui.EndFrame();
+        };
+    }
+
+    pub fn render(&self){
+        js! {
+            return window.Imgui.Render();
+        };
+    }
+
+    pub fn get_io(&self) -> ImguiIO{
         let ret = js! {
-            return window.Imgui.get_io();
+            return window.Imgui.GetIO();
         };
-        ret
+        ImguiIO{
+            imgui_io:ret
+        }
     }
 
-    pub fn get_draw_data(&self) -> stdweb::Value{
+    pub fn get_draw_data(&self) -> ImDrawData{
         let ret = js! {
             return window.Imgui.GetDrawData();
         };
-        ret
+        ImguiDrawData{
+            imgui_draw_data:ret
+        }
     }
 
     pub fn style_colors_dark(&self){
