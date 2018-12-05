@@ -6,6 +6,9 @@ edition = "2018"
 
 [dependencies]
 imgui-rust = { path = "../../", features=["stdweb"]}
-stdweb = "0.4.10"
+glfw = "0.25.0"
+gl = "0.11.0"
+serde = "1.0.0"
+serde_derive = "1.0.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

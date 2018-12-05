@@ -1,4 +1,6 @@
 
+use stdweb::unstable::TryInto;
+
 
 #[derive(Debug, Clone)]
 pub struct ImguiIO{
@@ -24,16 +26,22 @@ pub struct ImDrawList{
 }
 
 impl ImDrawList{
-    pub fn vtx_buffer(&self) -> &stdweb::Value{
-        self.draw_list.VtxBuffer
+    pub fn vtx_buffer(&self) -> stdweb::Value{
+        let list = &self.draw_list;
+        let ret = js!{return @{list}.VtxBuffer;};
+        ret
     }
 
-    pub fn idx_buffer(&self) -> &stdweb::Value{
-        self.draw_list.IdxBuffer
+    pub fn idx_buffer(&self) -> stdweb::Value{
+        let list = &self.draw_list;
+        let ret = js!{return @{list}.IdxBuffer;};
+        ret
     }
 
-    pub fn flags(&self) -> &stdweb::Value{
-        self.draw_list.Flags
+    pub fn flags(&self) -> stdweb::Value{
+        let list = &self.draw_list;
+        let ret = js!{return @{list}.Flags;};
+        ret
     }
 
     pub fn iterate_draw_cmds(&self, callback:fn(stdweb::Value)->()){
@@ -59,7 +67,7 @@ impl Imgui{
         let ret = js! {
             return window.Imgui.IMGUI_VERSION;
         };
-        ret
+        ret.try_into().unwrap()
     }
 
     #[allow(non_snake_case)]
@@ -106,7 +114,7 @@ impl Imgui{
         let ret = js! {
             return window.Imgui.GetDrawData();
         };
-        ImguiDrawData{
+        ImDrawData{
             imgui_draw_data:ret
         }
     }
